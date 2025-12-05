@@ -1,7 +1,8 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id("maven-publish")
+    id("org.jetbrains.dokka")
+    id("com.vanniktech.maven.publish")
 }
 
 android {
@@ -34,10 +35,50 @@ android {
         jvmTarget = "1.8"
     }
     
-    publishing {
-        singleVariant("release") {
-            withSourcesJar()
-            withJavadocJar()
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+            isReturnDefaultValues = true
+        }
+    }
+}
+
+// Maven Central Publishing Configuration
+mavenPublishing {
+    publishToMavenCentral(com.vanniktech.maven.publish.SonatypeHost.CENTRAL_PORTAL)
+    signAllPublications()
+    
+    coordinates(
+        groupId = property("GROUP").toString(),
+        artifactId = "ailang-android",
+        version = property("VERSION_NAME").toString()
+    )
+    
+    pom {
+        name.set(property("POM_NAME").toString())
+        description.set(property("POM_DESCRIPTION").toString())
+        url.set(property("POM_URL").toString())
+        
+        licenses {
+            license {
+                name.set(property("POM_LICENCE_NAME").toString())
+                url.set(property("POM_LICENCE_URL").toString())
+                distribution.set(property("POM_LICENCE_DIST").toString())
+            }
+        }
+        
+        developers {
+            developer {
+                id.set(property("POM_DEVELOPER_ID").toString())
+                name.set(property("POM_DEVELOPER_NAME").toString())
+                email.set(property("POM_DEVELOPER_EMAIL").toString())
+            }
+        }
+        
+        scm {
+            url.set(property("POM_SCM_URL").toString())
+            connection.set(property("POM_SCM_CONNECTION").toString())
+            developerConnection.set(property("POM_SCM_DEV_CONNECTION").toString())
         }
     }
 }
@@ -58,48 +99,11 @@ dependencies {
     // Testing
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.mockito:mockito-core:5.8.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:5.2.1")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    testImplementation("org.robolectric:robolectric:4.11.1")
+    testImplementation("androidx.test:core:1.5.0")
+    testImplementation("io.mockk:mockk:1.13.9")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-}
-
-publishing {
-    publications {
-        register<MavenPublication>("release") {
-            groupId = "io.github.ailang"
-            artifactId = "ailang-android"
-            version = "1.0.0"
-            
-            afterEvaluate {
-                from(components["release"])
-            }
-            
-            pom {
-                name.set("AiLang Android SDK")
-                description.set("AI-Powered Real-Time Translation Framework for Android")
-                url.set("https://github.com/AiLang/ailang")
-                
-                licenses {
-                    license {
-                        name.set("MIT License")
-                        url.set("https://opensource.org/licenses/MIT")
-                    }
-                }
-                
-                developers {
-                    developer {
-                        id.set("suraj0834")
-                        name.set("Suraj")
-                        email.set("suraj6202k@gmail.com")
-                    }
-                }
-                
-                scm {
-                    connection.set("scm:git:github.com/AiLang/ailang.git")
-                    developerConnection.set("scm:git:ssh://github.com/AiLang/ailang.git")
-                    url.set("https://github.com/AiLang/ailang")
-                }
-            }
-        }
-    }
 }

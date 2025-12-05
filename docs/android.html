@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Android SDK - AiLang Documentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="../" class="logo">🌐 AiLang</a>
+            <div class="nav-links">
+                <a href="./">Docs</a>
+                <a href="./android.html" class="active">Android</a>
+                <a href="./react-native.html">React Native</a>
+                <a href="https://github.com/Suraj0834/AiLang">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="docs-layout">
+        <aside class="sidebar">
+            <h4>Getting Started</h4>
+            <ul>
+                <li><a href="#installation">Installation</a></li>
+                <li><a href="#initialization">Initialization</a></li>
+                <li><a href="#basic-usage">Basic Usage</a></li>
+            </ul>
+            <h4>Core Features</h4>
+            <ul>
+                <li><a href="#translation">Translation</a></li>
+                <li><a href="#parameters">Parameters</a></li>
+                <li><a href="#pluralization">Pluralization</a></li>
+                <li><a href="#language-switching">Language Switching</a></li>
+            </ul>
+            <h4>Advanced</h4>
+            <ul>
+                <li><a href="#caching">Caching</a></li>
+                <li><a href="#preloading">Preloading</a></li>
+                <li><a href="#rtl-support">RTL Support</a></li>
+                <li><a href="#configuration">Configuration</a></li>
+            </ul>
+        </aside>
+
+        <main class="docs-content">
+            <h1>Android SDK Documentation</h1>
+            <p class="intro">Complete guide to integrating AiLang into your Android application.</p>
+
+            <section id="installation">
+                <h2>Installation</h2>
+                <p>Add AiLang to your project's <code>build.gradle.kts</code> or <code>build.gradle</code>:</p>
+                
+                <h4>Kotlin DSL (build.gradle.kts)</h4>
+                <pre><code>dependencies {
+    implementation("io.github.ailang:ailang-android:1.0.0")
+}</code></pre>
+
+                <h4>Groovy DSL (build.gradle)</h4>
+                <pre><code>dependencies {
+    implementation 'io.github.ailang:ailang-android:1.0.0'
+}</code></pre>
+            </section>
+
+            <section id="initialization">
+                <h2>Initialization</h2>
+                <p>Initialize AiLang in your Application class:</p>
+                
+                <pre><code class="kotlin">class MyApp : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        
+        // Basic initialization
+        AiLang.init(this, "YOUR_GEMINI_API_KEY")
+        
+        // Or with custom configuration
+        AiLang.init(
+            context = this,
+            apiKey = "YOUR_GEMINI_API_KEY",
+            config = AiLangConfig.builder()
+                .defaultLanguage("en")
+                .cacheEnabled(true)
+                .cacheDuration(24 * 60 * 60 * 1000L) // 24 hours
+                .debugMode(BuildConfig.DEBUG)
+                .build()
+        )
+    }
+}</code></pre>
+
+                <div class="warning">
+                    <strong>⚠️ Security Note:</strong> Never hardcode your API key. Use BuildConfig, encrypted storage, or a backend proxy.
+                </div>
+            </section>
+
+            <section id="basic-usage">
+                <h2>Basic Usage</h2>
+                <p>Use the <code>t()</code> function to translate strings:</p>
+
+                <pre><code class="kotlin">// Simple translation
+val greeting = AiLang.t("hello")  // Returns translated "Hello"
+
+// In a TextView
+textView.text = AiLang.t("welcome_message")
+
+// In Jetpack Compose
+Text(text = AiLang.t("title"))</code></pre>
+            </section>
+
+            <section id="translation">
+                <h2>Translation</h2>
+                <p>AiLang provides several ways to translate text:</p>
+
+                <pre><code class="kotlin">// Basic translation
+val text = AiLang.t("greeting")
+
+// With fallback key
+val text = AiLang.t("unknown_key")  // Returns "unknown_key" if not found</code></pre>
+            </section>
+
+            <section id="parameters">
+                <h2>Parameters</h2>
+                <p>Dynamic values can be inserted into translations:</p>
+
+                <pre><code class="kotlin">// Define in your strings: "Hello, {name}! You have {count} messages."
+
+val message = AiLang.t("welcome", mapOf(
+    "name" to userName,
+    "count" to messageCount
+))
+
+// Result: "¡Hola, Juan! Tienes 5 mensajes." (in Spanish)</code></pre>
+            </section>
+
+            <section id="pluralization">
+                <h2>Pluralization</h2>
+                <p>Handle plural forms automatically:</p>
+
+                <pre><code class="kotlin">// Define: "{count} item|{count} items"
+
+val itemText = AiLang.t("items", 1)  // "1 item"
+val itemsText = AiLang.t("items", 5) // "5 items"</code></pre>
+            </section>
+
+            <section id="language-switching">
+                <h2>Language Switching</h2>
+                <p>Change language at runtime:</p>
+
+                <pre><code class="kotlin">// Change language
+AiLang.setLanguage("es")  // Switch to Spanish
+AiLang.setLanguage("hi")  // Switch to Hindi
+
+// Get current language
+val currentLang = AiLang.getCurrentLanguage()
+
+// Get all supported languages
+val languages = AiLang.getSupportedLanguages()
+languages.forEach { lang ->
+    println("${lang.name} (${lang.code}) - ${lang.nativeName}")
+}
+
+// Listen for language changes
+AiLang.addLanguageChangeListener { newLang ->
+    // Update UI
+    recreate()
+}</code></pre>
+            </section>
+
+            <section id="caching">
+                <h2>Caching</h2>
+                <p>Translations are cached automatically for performance:</p>
+
+                <pre><code class="kotlin">// Clear all cached translations
+AiLang.clearCache()
+
+// Configure caching in initialization
+AiLangConfig.builder()
+    .cacheEnabled(true)
+    .cacheDuration(48 * 60 * 60 * 1000L) // 48 hours
+    .maxCacheSize(20) // 20 MB
+    .build()</code></pre>
+            </section>
+
+            <section id="preloading">
+                <h2>Preloading Languages</h2>
+                <p>Pre-translate all strings for offline use:</p>
+
+                <pre><code class="kotlin">// Preload a language
+AiLang.preloadLanguage("es") { success ->
+    if (success) {
+        println("Spanish translations preloaded")
+    }
+}
+
+// Preload multiple languages
+listOf("es", "fr", "de").forEach { lang ->
+    AiLang.preloadLanguage(lang)
+}</code></pre>
+            </section>
+
+            <section id="rtl-support">
+                <h2>RTL Support</h2>
+                <p>Handle right-to-left languages:</p>
+
+                <pre><code class="kotlin">// Check if current language is RTL
+if (AiLang.isRTL()) {
+    // Adjust layout for RTL
+    layoutDirection = View.LAYOUT_DIRECTION_RTL
+}
+
+// RTL languages: Arabic, Hebrew, Persian, Urdu</code></pre>
+            </section>
+
+            <section id="configuration">
+                <h2>Configuration Options</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Option</th>
+                            <th>Type</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>defaultLanguage</code></td>
+                            <td>String</td>
+                            <td>"en"</td>
+                            <td>Fallback language code</td>
+                        </tr>
+                        <tr>
+                            <td><code>cacheEnabled</code></td>
+                            <td>Boolean</td>
+                            <td>true</td>
+                            <td>Enable translation caching</td>
+                        </tr>
+                        <tr>
+                            <td><code>cacheDuration</code></td>
+                            <td>Long</td>
+                            <td>86400000</td>
+                            <td>Cache TTL in milliseconds (24h)</td>
+                        </tr>
+                        <tr>
+                            <td><code>maxCacheSize</code></td>
+                            <td>Int</td>
+                            <td>10</td>
+                            <td>Maximum cache size in MB</td>
+                        </tr>
+                        <tr>
+                            <td><code>debugMode</code></td>
+                            <td>Boolean</td>
+                            <td>false</td>
+                            <td>Enable debug logging</td>
+                        </tr>
+                        <tr>
+                            <td><code>batchSize</code></td>
+                            <td>Int</td>
+                            <td>50</td>
+                            <td>Strings per API call</td>
+                        </tr>
+                        <tr>
+                            <td><code>timeout</code></td>
+                            <td>Int</td>
+                            <td>30</td>
+                            <td>API timeout in seconds</td>
+                        </tr>
+                        <tr>
+                            <td><code>retryCount</code></td>
+                            <td>Int</td>
+                            <td>3</td>
+                            <td>API retry attempts</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

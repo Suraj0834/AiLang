@@ -12,15 +12,19 @@
     "lib",
     "!**/__tests__",
     "!**/__fixtures__",
-    "!**/__mocks__"
+    "!**/__mocks__",
+    "README.md"
   ],
   "scripts": {
     "build": "bob build",
-    "test": "jest",
+    "test": "jest --coverage",
+    "test:watch": "jest --watch",
     "typescript": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
+    "lint:fix": "eslint \"**/*.{js,ts,tsx}\" --fix",
     "prepare": "bob build",
-    "release": "release-it"
+    "release": "release-it",
+    "prepublishOnly": "npm run build && npm run test"
   },
   "keywords": [
     "react-native",
@@ -34,16 +38,17 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AiLang/ailang.git"
+    "url": "git+https://github.com/Suraj0834/AiLang.git"
   },
   "author": "Suraj <suraj6202k@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/AiLang/ailang/issues"
+    "url": "https://github.com/Suraj0834/AiLang/issues"
   },
-  "homepage": "https://github.com/AiLang/ailang#readme",
+  "homepage": "https://ailang.dev",
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.21.0"

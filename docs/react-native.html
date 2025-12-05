@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Native SDK - AiLang Documentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="../" class="logo">🌐 AiLang</a>
+            <div class="nav-links">
+                <a href="./">Docs</a>
+                <a href="./android.html">Android</a>
+                <a href="./react-native.html" class="active">React Native</a>
+                <a href="https://github.com/Suraj0834/AiLang">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="docs-layout">
+        <aside class="sidebar">
+            <h4>Getting Started</h4>
+            <ul>
+                <li><a href="#installation">Installation</a></li>
+                <li><a href="#setup">Setup</a></li>
+                <li><a href="#basic-usage">Basic Usage</a></li>
+            </ul>
+            <h4>Core Features</h4>
+            <ul>
+                <li><a href="#useailang-hook">useAiLang Hook</a></li>
+                <li><a href="#translation">Translation</a></li>
+                <li><a href="#language-switching">Language Switching</a></li>
+            </ul>
+            <h4>Advanced</h4>
+            <ul>
+                <li><a href="#batch-translation">Batch Translation</a></li>
+                <li><a href="#caching">Caching</a></li>
+                <li><a href="#typescript">TypeScript</a></li>
+                <li><a href="#configuration">Configuration</a></li>
+            </ul>
+        </aside>
+
+        <main class="docs-content">
+            <h1>React Native SDK Documentation</h1>
+            <p class="intro">Complete guide to integrating AiLang into your React Native application.</p>
+
+            <section id="installation">
+                <h2>Installation</h2>
+                
+                <h4>Using npm</h4>
+                <pre><code>npm install @ailang/react-native</code></pre>
+
+                <h4>Using Yarn</h4>
+                <pre><code>yarn add @ailang/react-native</code></pre>
+
+                <h4>Peer Dependencies</h4>
+                <pre><code>npm install @react-native-async-storage/async-storage</code></pre>
+
+                <h4>iOS Setup</h4>
+                <pre><code>cd ios && pod install</code></pre>
+            </section>
+
+            <section id="setup">
+                <h2>Setup</h2>
+                <p>Wrap your app with the <code>AiLangProvider</code>:</p>
+                
+                <pre><code class="typescript">import React from 'react';
+import { AiLangProvider } from '@ailang/react-native';
+import App from './App';
+
+const Root = () => (
+  &lt;AiLangProvider
+    apiKey="YOUR_GEMINI_API_KEY"
+    defaultLanguage="en"
+    enableCache={true}
+  &gt;
+    &lt;App /&gt;
+  &lt;/AiLangProvider&gt;
+);
+
+export default Root;</code></pre>
+
+                <div class="warning">
+                    <strong>⚠️ Security Note:</strong> Use environment variables or a secure backend for your API key.
+                </div>
+            </section>
+
+            <section id="basic-usage">
+                <h2>Basic Usage</h2>
+                <p>Use the <code>useAiLang</code> hook in any component:</p>
+
+                <pre><code class="typescript">import React from 'react';
+import { View, Text, Button } from 'react-native';
+import { useAiLang } from '@ailang/react-native';
+
+const MyComponent = () => {
+  const { t, setLanguage, currentLanguage } = useAiLang();
+
+  return (
+    &lt;View&gt;
+      &lt;Text&gt;{t('hello')}&lt;/Text&gt;
+      &lt;Text&gt;Current: {currentLanguage}&lt;/Text&gt;
+      &lt;Button title="Switch to Spanish" onPress={() => setLanguage('es')} /&gt;
+    &lt;/View&gt;
+  );
+};</code></pre>
+            </section>
+
+            <section id="useailang-hook">
+                <h2>useAiLang Hook</h2>
+                <p>The hook provides all translation functionality:</p>
+
+                <pre><code class="typescript">const {
+  // Translation function
+  t,                    // (key: string, params?: object) => string
+  
+  // Language management
+  currentLanguage,      // Current language code
+  setLanguage,          // (code: string) => Promise&lt;void&gt;
+  supportedLanguages,   // Language[] - all available languages
+  isRTL,                // boolean - is current language RTL?
+  
+  // State
+  isLoading,            // boolean - translation in progress
+  
+  // Cache
+  clearCache,           // () => Promise&lt;void&gt;
+  preloadLanguage,      // (code: string) => Promise&lt;boolean&gt;
+} = useAiLang();</code></pre>
+            </section>
+
+            <section id="translation">
+                <h2>Translation</h2>
+
+                <h4>Simple Translation</h4>
+                <pre><code class="typescript">const greeting = t('hello');
+// Returns: "Hola" (if Spanish)</code></pre>
+
+                <h4>With Parameters</h4>
+                <pre><code class="typescript">// String: "Welcome, {name}! You have {count} notifications."
+const message = t('welcome', { name: 'John', count: 5 });
+// Returns: "¡Bienvenido, John! Tienes 5 notificaciones."</code></pre>
+
+                <h4>With Pluralization</h4>
+                <pre><code class="typescript">// String: "{count} item|{count} items"
+const single = t('items', { count: 1 }); // "1 item"
+const plural = t('items', { count: 5 }); // "5 items"</code></pre>
+            </section>
+
+            <section id="language-switching">
+                <h2>Language Switching</h2>
+
+                <pre><code class="typescript">import { useAiLang } from '@ailang/react-native';
+import { Picker } from '@react-native-picker/picker';
+
+const LanguageSwitcher = () => {
+  const { currentLanguage, setLanguage, supportedLanguages } = useAiLang();
+
+  return (
+    &lt;Picker
+      selectedValue={currentLanguage}
+      onValueChange={(lang) => setLanguage(lang)}
+    &gt;
+      {supportedLanguages.map((lang) => (
+        &lt;Picker.Item
+          key={lang.code}
+          label={lang.nativeName}
+          value={lang.code}
+        /&gt;
+      ))}
+    &lt;/Picker&gt;
+  );
+};</code></pre>
+            </section>
+
+            <section id="batch-translation">
+                <h2>Batch Translation</h2>
+                <p>Translate multiple strings efficiently:</p>
+
+                <pre><code class="typescript">import { TranslationService } from '@ailang/react-native';
+
+const translationService = new TranslationService({ apiKey: 'YOUR_KEY' });
+
+// Translate multiple texts at once
+const results = await translationService.translateBatch(
+  ['Hello', 'Goodbye', 'Thank you'],
+  'es'
+);
+
+// Results:
+// [
+//   { success: true, translatedText: 'Hola' },
+//   { success: true, translatedText: 'Adiós' },
+//   { success: true, translatedText: 'Gracias' }
+// ]</code></pre>
+            </section>
+
+            <section id="caching">
+                <h2>Caching</h2>
+                <p>Translations are cached automatically using AsyncStorage:</p>
+
+                <pre><code class="typescript">const { clearCache, preloadLanguage } = useAiLang();
+
+// Clear all cached translations
+await clearCache();
+
+// Preload translations for offline use
+const success = await preloadLanguage('es');
+if (success) {
+  console.log('Spanish translations cached');
+}</code></pre>
+            </section>
+
+            <section id="typescript">
+                <h2>TypeScript Support</h2>
+                <p>Full TypeScript support with exported types:</p>
+
+                <pre><code class="typescript">import {
+  AiLangConfig,
+  Language,
+  TranslationResult,
+  AiLangContextValue,
+} from '@ailang/react-native';
+
+// Type-safe configuration
+const config: AiLangConfig = {
+  apiKey: 'YOUR_KEY',
+  defaultLanguage: 'en',
+  enableCache: true,
+  maxCacheSize: 500,
+  cacheDuration: 86400000,
+};
+
+// Language type
+const language: Language = {
+  code: 'es',
+  name: 'Spanish',
+  nativeName: 'Español',
+};
+
+// Translation result type
+const result: TranslationResult = {
+  success: true,
+  translatedText: 'Hola',
+  fromCache: false,
+};</code></pre>
+            </section>
+
+            <section id="configuration">
+                <h2>Configuration Options</h2>
+                
+                <h4>AiLangProvider Props</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Prop</th>
+                            <th>Type</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>apiKey</code></td>
+                            <td>string</td>
+                            <td>required</td>
+                            <td>Gemini API key</td>
+                        </tr>
+                        <tr>
+                            <td><code>defaultLanguage</code></td>
+                            <td>string</td>
+                            <td>"en"</td>
+                            <td>Default language code</td>
+                        </tr>
+                        <tr>
+                            <td><code>enableCache</code></td>
+                            <td>boolean</td>
+                            <td>true</td>
+                            <td>Enable caching</td>
+                        </tr>
+                        <tr>
+                            <td><code>maxCacheSize</code></td>
+                            <td>number</td>
+                            <td>500</td>
+                            <td>Maximum cache entries</td>
+                        </tr>
+                        <tr>
+                            <td><code>cacheDuration</code></td>
+                            <td>number</td>
+                            <td>86400000</td>
+                            <td>Cache TTL (24h in ms)</td>
+                        </tr>
+                        <tr>
+                            <td><code>debugMode</code></td>
+                            <td>boolean</td>
+                            <td>false</td>
+                            <td>Enable debug logs</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

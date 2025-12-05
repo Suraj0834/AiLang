@@ -3,14 +3,15 @@
 plugins {
     id("com.android.library") version "8.2.0" apply false
     id("org.jetbrains.kotlin.android") version "1.9.22" apply false
-    id("maven-publish")
+    id("org.jetbrains.dokka") version "1.9.10" apply false
+    id("com.vanniktech.maven.publish") version "0.27.0" apply false
 }
 
 allprojects {
-    group = "io.github.ailang"
-    version = "1.0.0"
+    group = property("GROUP").toString()
+    version = property("VERSION_NAME").toString()
 }
 
 tasks.register("clean", Delete::class) {
-    delete(rootProject.buildDir)
+    delete(rootProject.layout.buildDirectory)
 }
