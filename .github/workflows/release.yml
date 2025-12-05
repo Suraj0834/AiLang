@@ -3,6 +3,12 @@ name: Release
 on:
   release:
     types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., 1.0.0)'
+        required: true
+        default: '1.0.0'
 
 jobs:
   publish-android:
@@ -24,17 +30,20 @@ jobs:
 
     - name: Update version
       run: |
-        VERSION=${{ github.event.release.tag_name }}
-        # Remove 'v' prefix if present
-        VERSION=${VERSION#v}
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          VERSION=${{ github.event.inputs.version }}
+        else
+          VERSION=${{ github.event.release.tag_name }}
+          VERSION=${VERSION#v}
+        fi
         sed -i "s/VERSION_NAME=.*/VERSION_NAME=$VERSION/" android/gradle.properties
 
     - name: Build and publish to Maven Central
       run: ./gradlew publishAllPublicationsToMavenCentralRepository
       working-directory: android
       env:
-        ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.OSSRH_USERNAME }}
-        ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.OSSRH_PASSWORD }}
+        ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.SONATYPE_USERNAME }}
+        ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.SONATYPE_PASSWORD }}
         ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
         ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
 
@@ -57,8 +66,12 @@ jobs:
 
     - name: Update version
       run: |
-        VERSION=${{ github.event.release.tag_name }}
-        VERSION=${VERSION#v}
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          VERSION=${{ github.event.inputs.version }}
+        else
+          VERSION=${{ github.event.release.tag_name }}
+          VERSION=${VERSION#v}
+        fi
         npm version $VERSION --no-git-tag-version
       working-directory: react-native
 
@@ -87,15 +100,19 @@ jobs:
 
     - name: Update version in docs
       run: |
-        VERSION=${{ github.event.release.tag_name }}
-        VERSION=${VERSION#v}
-        sed -i "s/ailang-android:[0-9.]*/ailang-android:$VERSION/g" README.md
-        sed -i "s/@ailang\/react-native@[0-9.]*/@ailang\/react-native@$VERSION/g" README.md
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          VERSION=${{ github.event.inputs.version }}
+        else
+          VERSION=${{ github.event.release.tag_name }}
+          VERSION=${VERSION#v}
+        fi
+        sed -i "s/ailang-android:[0-9.]*/ailang-android:$VERSION/g" README.md || true
+        sed -i "s/@ailang\/react-native@[0-9.]*/@ailang\/react-native@$VERSION/g" README.md || true
 
     - name: Commit docs update
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add README.md
-        git commit -m "docs: update version to ${{ github.event.release.tag_name }}" || exit 0
+        git commit -m "docs: update version to $VERSION" || exit 0
         git push
