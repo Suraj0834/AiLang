@@ -4,7 +4,7 @@ plugins {
     id("com.android.library") version "8.2.0" apply false
     id("org.jetbrains.kotlin.android") version "1.9.22" apply false
     id("org.jetbrains.dokka") version "1.9.10" apply false
-    id("com.vanniktech.maven.publish") version "0.27.0" apply false
+    id("com.vanniktech.maven.publish") version "0.28.0" apply false
 }
 
 allprojects {
