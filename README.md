@@ -603,6 +603,49 @@ This project is licensed under the **MIT License** - see the [LICENSE](./LICENSE
 
 <br/>
 
+## 🗺️ Roadmap - What's Coming Next
+
+<div align="center">
+
+We're constantly working to expand AiLang to more platforms! Here's what's on our roadmap:
+
+</div>
+
+<br/>
+
+### 🔜 Upcoming Platform Support
+
+| Platform | Status | Expected Release |
+|:---------|:------:|:----------------:|
+| <img src="https://img.shields.io/badge/Flutter-02569B?style=flat-square&logo=flutter&logoColor=white" width="80"/> **Flutter/Dart** | 🚧 In Development | Q1 2025 |
+| <img src="https://img.shields.io/badge/Swift-FA7343?style=flat-square&logo=swift&logoColor=white" width="80"/> **iOS (Swift)** | 📋 Planned | Q2 2025 |
+| <img src="https://img.shields.io/badge/SwiftUI-0D96F6?style=flat-square&logo=swift&logoColor=white" width="80"/> **SwiftUI** | 📋 Planned | Q2 2025 |
+| <img src="https://img.shields.io/badge/.NET_MAUI-512BD4?style=flat-square&logo=dotnet&logoColor=white" width="80"/> **.NET MAUI** | 📋 Planned | Q3 2025 |
+| <img src="https://img.shields.io/badge/Kotlin_Multiplatform-7F52FF?style=flat-square&logo=kotlin&logoColor=white" width="80"/> **KMP** | 📋 Planned | Q3 2025 |
+| <img src="https://img.shields.io/badge/Vue.js-4FC08D?style=flat-square&logo=vuedotjs&logoColor=white" width="80"/> **Vue.js** | 📋 Planned | Q4 2025 |
+| <img src="https://img.shields.io/badge/Angular-DD0031?style=flat-square&logo=angular&logoColor=white" width="80"/> **Angular** | 📋 Planned | Q4 2025 |
+| <img src="https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=nextdotjs&logoColor=white" width="80"/> **Next.js** | 📋 Planned | Q4 2025 |
+
+<br/>
+
+### 🎯 Future Features
+
+- 🔄 **Offline Mode** - Cache translations for offline usage
+- 📊 **Analytics Dashboard** - Track translation usage and performance
+- 🎨 **Custom AI Models** - Support for custom fine-tuned translation models
+- 🔌 **Plugin System** - Extensible architecture for custom providers
+- 📝 **Translation Memory** - Reuse previous translations across projects
+
+<br/>
+
+> 💡 **Have a suggestion?** We'd love to hear from you! [Open an issue](https://github.com/Suraj0834/AiLang/issues) to request a new platform or feature.
+
+<br/>
+
+---
+
+<br/>
+
 <div align="center">
 
 ## ⭐ Support the Project
