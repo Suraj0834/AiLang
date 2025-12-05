@@ -13,7 +13,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-1.0.0-blue?style=for-the-badge" alt="Version"/>
+  <img src="https://img.shields.io/badge/Version-1.0.1-blue?style=for-the-badge" alt="Version"/>
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License"/>
   <img src="https://img.shields.io/badge/Platforms-Android%20%7C%20React%20Native-orange?style=for-the-badge" alt="Platforms"/>
 </p>
@@ -51,14 +51,14 @@
 #### Gradle (build.gradle.kts)
 ```kotlin
 dependencies {
-    implementation("io.github.ailang:ailang-android:1.0.0")
+    implementation("io.github.suraj0834.ailang:ailang-android:1.0.1")
 }
 ```
 
 #### Gradle (build.gradle)
 ```groovy
 dependencies {
-    implementation 'io.github.ailang:ailang-android:1.0.0'
+    implementation 'io.github.suraj0834.ailang:ailang-android:1.0.1'
 }
 ```
 
@@ -66,10 +66,10 @@ dependencies {
 
 ```bash
 # Using npm
-npm install @ailang/react-native
+npm install ailang-react-native
 
 # Using yarn
-yarn add @ailang/react-native
+yarn add ailang-react-native
 ```
 
 ---
@@ -117,7 +117,7 @@ class MainActivity : AppCompatActivity() {
 
 ```typescript
 // 1. Initialize in App.tsx
-import { AiLangProvider, useAiLang } from '@ailang/react-native';
+import { AiLangProvider, useAiLang } from 'ailang-react-native';
 
 const App = () => {
   return (
@@ -443,7 +443,7 @@ fun setup() {
 ### React Native
 ```typescript
 // Mock AiLang for tests
-jest.mock('@ailang/react-native', () => ({
+jest.mock('ailang-react-native', () => ({
   useAiLang: () => ({
     t: (key: string) => key,
     setLanguage: jest.fn(),

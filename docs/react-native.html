@@ -51,10 +51,10 @@
                 <h2>Installation</h2>
                 
                 <h4>Using npm</h4>
-                <pre><code>npm install @ailang/react-native</code></pre>
+                <pre><code>npm install ailang-react-native</code></pre>
 
                 <h4>Using Yarn</h4>
-                <pre><code>yarn add @ailang/react-native</code></pre>
+                <pre><code>yarn add ailang-react-native</code></pre>
 
                 <h4>Peer Dependencies</h4>
                 <pre><code>npm install @react-native-async-storage/async-storage</code></pre>
@@ -68,7 +68,7 @@
                 <p>Wrap your app with the <code>AiLangProvider</code>:</p>
                 
                 <pre><code class="typescript">import React from 'react';
-import { AiLangProvider } from '@ailang/react-native';
+import { AiLangProvider } from 'ailang-react-native';
 import App from './App';
 
 const Root = () => (
@@ -94,7 +94,7 @@ export default Root;</code></pre>
 
                 <pre><code class="typescript">import React from 'react';
 import { View, Text, Button } from 'react-native';
-import { useAiLang } from '@ailang/react-native';
+import { useAiLang } from 'ailang-react-native';
 
 const MyComponent = () => {
   const { t, setLanguage, currentLanguage } = useAiLang();
@@ -153,7 +153,7 @@ const plural = t('items', { count: 5 }); // "5 items"</code></pre>
             <section id="language-switching">
                 <h2>Language Switching</h2>
 
-                <pre><code class="typescript">import { useAiLang } from '@ailang/react-native';
+                <pre><code class="typescript">import { useAiLang } from 'ailang-react-native';
 import { Picker } from '@react-native-picker/picker';
 
 const LanguageSwitcher = () => {
@@ -180,7 +180,7 @@ const LanguageSwitcher = () => {
                 <h2>Batch Translation</h2>
                 <p>Translate multiple strings efficiently:</p>
 
-                <pre><code class="typescript">import { TranslationService } from '@ailang/react-native';
+                <pre><code class="typescript">import { TranslationService } from 'ailang-react-native';
 
 const translationService = new TranslationService({ apiKey: 'YOUR_KEY' });
 
@@ -223,7 +223,7 @@ if (success) {
   Language,
   TranslationResult,
   AiLangContextValue,
-} from '@ailang/react-native';
+} from 'ailang-react-native';
 
 // Type-safe configuration
 const config: AiLangConfig = {
