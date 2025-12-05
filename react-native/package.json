@@ -1,6 +1,6 @@
 {
   "name": "ailang-react-native",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "AI-Powered Real-Time Translation Framework for React Native",
   "main": "lib/commonjs/index.js",
   "module": "lib/module/index.js",
