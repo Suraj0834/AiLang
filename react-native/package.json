@@ -1,6 +1,6 @@
 {
   "name": "ailang-react-native",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "AI-Powered Real-Time Translation Framework for React Native",
   "main": "lib/commonjs/index.js",
   "module": "lib/module/index.js",
@@ -46,7 +46,7 @@
   "bugs": {
     "url": "https://github.com/Suraj0834/AiLang/issues"
   },
-  "homepage": "https://ailang.dev",
+  "homepage": "https://suraj0834.github.io/AiLang/",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
     "access": "public"
