@@ -1,5 +1,5 @@
 {
-  "name": "@ailang/react-native",
+  "name": "ailang-react-native",
   "version": "1.0.1",
   "description": "AI-Powered Real-Time Translation Framework for React Native",
   "main": "lib/commonjs/index.js",
@@ -34,7 +34,8 @@
     "localization",
     "ai",
     "gemini",
-    "multilingual"
+    "multilingual",
+    "ailang"
   ],
   "repository": {
     "type": "git",
